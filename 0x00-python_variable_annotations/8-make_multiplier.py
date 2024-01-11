@@ -12,7 +12,7 @@ def mult(a: float) -> float:
         Return:
             multiple of a and b
     """
-    return a * a
+    return float(a * a)
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
