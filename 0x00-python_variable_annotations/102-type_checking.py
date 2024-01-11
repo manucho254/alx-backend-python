@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-""" Type Checking
+""" Type Checking the array
 """
 from typing import Tuple, List
 
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
-    """ Zoom array
+    """ Zoom array of values
         Args:
             lst: a tuple of values
             factor: an integer
