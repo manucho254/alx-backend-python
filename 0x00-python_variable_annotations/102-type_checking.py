@@ -5,7 +5,7 @@ from typing import Tuple, List
 
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
-    """ Zoom array of values
+    """ loop through values and return a list
         Args:
             lst: a tuple of values
             factor: an integer
