@@ -18,6 +18,6 @@ def zoom_array(lst: Tuple, factor: int = 2) -> List:
     return zoomed_in
 
 
-array: List = [12, 72, 91]
-zoom_2x: List = zoom_array(array)
-zoom_3x: List = zoom_array(array, 3)
+array = [12, 72, 91]
+zoom_2x = zoom_array(array)
+zoom_3x = zoom_array(array, 3)

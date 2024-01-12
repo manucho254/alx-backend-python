@@ -4,17 +4,6 @@
 from typing import Callable
 
 
-def mult(a: float) -> float:
-    """ multiply two float values
-        Args:
-            a: float value a
-            b: float value b
-        Return:
-            multiple of a and b
-    """
-    return float(a * a)
-
-
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
     """ multiply function by float
         Args:
@@ -22,4 +11,5 @@ def make_multiplier(multiplier: float) -> Callable[[float], float]:
         Return:
               function that multiples a float by
     """
+    mult: Callable[[float], float] = lambda value: value * multiplier
     return mult
