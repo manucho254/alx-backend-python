@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-""" Loop through values and return a list
+""" Loop through
+    values and
+    return a list
 """
 from typing import Tuple, List
 
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
-    """Loop through values and return a list
-       Args:
-           lst: a tuple of values
-           factor: an integer
-        Return: a list of integers
+    """
+       Code docs
     """
     zoomed_in: List = [
             item for item in lst
