@@ -10,4 +10,4 @@ async def test(max_delay: int) -> float:
     await task
     print(task.__class__)
 
-    asyncio.run(test(5))
+asyncio.run(test(5))
