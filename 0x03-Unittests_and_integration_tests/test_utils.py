@@ -89,7 +89,8 @@ class TestMemoize(unittest.TestCase):
                 """
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method", return_value=42) as mock_method:
+        with patch.object(TestClass,
+                          "a_method", return_value=42) as mock_method:
             test_obj = TestClass()
             test_obj.a_property
             test_obj.a_property
