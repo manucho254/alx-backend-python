@@ -2,11 +2,11 @@
 """ Parameterize a unit test """
 
 from parameterized import parameterized
+from typing import Callable
 import utils
 import unittest
 from unittest import mock
 from unittest.mock import patch
-import requests
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -74,12 +74,12 @@ class TestMemoize(unittest.TestCase):
         class TestClass:
             """Test class"""
 
-            def a_method(self):
+            def a_method(self) -> int:
                 "a method"
                 return 42
 
             @utils.memoize
-            def a_property(self):
+            def a_property(self) -> Callable:
                 """a property"""
                 return self.a_method()
 
