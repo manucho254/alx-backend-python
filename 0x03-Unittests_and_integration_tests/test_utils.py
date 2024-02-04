@@ -5,6 +5,7 @@ from parameterized import parameterized
 import utils
 import unittest
 from unittest import mock
+from unittest.mock import patch
 import requests
 
 
@@ -62,3 +63,28 @@ class TestGetJson(unittest.TestCase):
         get_json_getter.return_value.json.return_value = test_payload
         self.assertEqual(utils.get_json(test_url), test_payload)
         get_json_getter.assert_called_once_with(test_url)
+
+
+class TestMemoize(unittest.TestCase):
+    """Test utils memoize method"""
+
+    def test_memoize(self):
+        """test memoize method"""
+
+        class TestClass:
+            """Test class"""
+
+            def a_method(self):
+                "a method"
+                return 42
+
+            @utils.memoize
+            def a_property(self):
+                """a property"""
+                return self.a_method()
+
+        with patch.object(TestClass, "a_method", return_value=42) as mock_method:
+            test_obj = TestClass()
+            test_obj.a_property
+            test_obj.a_property
+            mock_method.assert_called_once()
