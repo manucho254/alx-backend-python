@@ -2,12 +2,13 @@
 """ Parameterize and patch as decorators """
 
 
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 
 import unittest
 from unittest import mock
 from unittest.mock import PropertyMock, patch
+from fixtures import TEST_PAYLOAD
 
 
 TEST_DATA = {
@@ -28,7 +29,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self):
         """Mocking a property"""
-        with patch.object(GithubOrgClient, "org", return_value=TEST_DATA,
+        with patch.object(GithubOrgClient, "org",
+                          return_value=TEST_DATA,
                           new_callable=PropertyMock):
             client = GithubOrgClient("google")
             self.assertEqual(client._public_repos_url,
@@ -60,3 +62,32 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("test")
         self.assertEqual(client.has_license(test_repo, license_name),
                          expected_res)
+
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    TEST_PAYLOAD,
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration Test"""
+
+    @classmethod
+    def setUpClass(cls):
+        """setup method"""
+        cls.get_patcher = patch("requests.get")
+        cls.mock_get = cls.get_patcher.start()
+        cls.mock_get.side_effect = [
+            unittest.mock.Mock(json=lambda: cls.org_payload),
+            unittest.mock.Mock(json=lambda: cls.repos_payload),
+        ]
+
+    def test_integration(self):
+        """test integration"""
+        client = GithubOrgClient("test")
+        result = client.public_repos()
+        self.assertEqual(result, self.expected_repos)
+
+    @classmethod
+    def tearDownClass(cls):
+        """teardown method"""
+        cls.get_patcher.stop()
