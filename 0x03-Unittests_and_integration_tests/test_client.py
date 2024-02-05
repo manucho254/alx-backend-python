@@ -46,7 +46,7 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch("client.get_json", return_value=data):
             client = GithubOrgClient("google")
             response = client.public_repos()
-            
+
         res = ["repo_1", "manucho_repo"]
         mocK_public_repos_url.assert_called_once()
         self.assertEqual(response, res)
