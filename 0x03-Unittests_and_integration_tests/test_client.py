@@ -37,7 +37,7 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(
                 client._public_repos_url, TEST_DATA.get("repos_url")
             )
-
+            
     @mock.patch("requests.get")
     def test_public_repos(self, get_json_getter):
         """Test public repos"""
@@ -52,7 +52,6 @@ class TestGithubOrgClient(unittest.TestCase):
             new_callable=PropertyMock,
         ) as mock_public_repos_url:
             client = GithubOrgClient("google")
-            self.assertEqual(client._public_repos_url, data)
             expected_public_repos = [
                 "episodes.dart",
                 "cpp-netlib",
@@ -65,5 +64,6 @@ class TestGithubOrgClient(unittest.TestCase):
                 "firmata.py",
             ]
             self.assertEqual(client.public_repos(), expected_public_repos)
+            mock_public_repos_url.assert_called_once()
 
         get_json_getter.assert_called_once()
