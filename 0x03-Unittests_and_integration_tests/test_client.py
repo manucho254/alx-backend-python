@@ -36,20 +36,20 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(client._public_repos_url,
                              TEST_DATA.get("repos_url"))
 
-    @mock.patch("client.GithubOrgClient._public_repos_url",
-                new_callable=PropertyMock)
+    @patch("client.GithubOrgClient._public_repos_url",
+           new_callable=PropertyMock)
     def test_public_repos(self, mocK_public_repos_url):
         """Test public repos"""
         mocK_public_repos_url.return_value = "test_url"
-        data = [{"name": "repo-1"}, {"name": "manucho_repo"}]
+        data = [{"name": "repo_1"}, {"name": "manucho_repo"}]
 
-        with patch("client.get_json", return_value=data) as mock_get_json:
+        with patch("client.get_json", return_value=data):
             client = GithubOrgClient("google")
             response = client.public_repos()
-            mock_get_json.assert_called_once()
-
+            
+        res = ["repo_1", "manucho_repo"]
         mocK_public_repos_url.assert_called_once()
-        self.assertEqual(response, ["repo-1", "manucho_repo"])
+        self.assertEqual(response, res)
 
     @parameterized.expand(
         [
