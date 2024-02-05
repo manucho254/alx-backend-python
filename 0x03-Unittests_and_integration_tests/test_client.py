@@ -34,10 +34,8 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(client._public_repos_url,
                              TEST_DATA.get("repos_url"))
 
-    @mock.patch(
-        "client.GithubOrgClient._public_repos_url",
-        new_callable=PropertyMock,
-    )
+    @mock.patch("client.GithubOrgClient._public_repos_url",
+                new_callable=PropertyMock)
     def test_public_repos(self, mocK_public_repos_url):
         """Test public repos"""
         mocK_public_repos_url.return_value = "test_url"
