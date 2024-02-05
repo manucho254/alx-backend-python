@@ -86,7 +86,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """test public repos no license"""
         result = self.client.public_repos()
         self.assertEqual(result, self.expected_repos)
-        
+
     def test_public_repos_with_license(self):
         """ test public repos with license """
         self.expected_repos = ['dagger', 'kratu',
