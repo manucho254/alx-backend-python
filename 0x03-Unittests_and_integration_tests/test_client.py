@@ -80,11 +80,17 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             unittest.mock.Mock(json=lambda: cls.org_payload),
             unittest.mock.Mock(json=lambda: cls.repos_payload),
         ]
+        cls.client = GithubOrgClient("test")
 
     def test_integration(self):
         """test integration"""
-        client = GithubOrgClient("test")
-        result = client.public_repos()
+        result = self.client.public_repos()
+        self.assertEqual(result, self.expected_repos)
+        
+    def test_public_repos_with_license(self):
+        self.expected_repos = ['dagger', 'kratu',
+                               'traceur-compiler', 'firmata.py']
+        result = self.client.public_repos(license="apache-2.0")
         self.assertEqual(result, self.expected_repos)
 
     @classmethod
