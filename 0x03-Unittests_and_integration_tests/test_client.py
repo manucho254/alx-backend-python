@@ -82,12 +82,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         ]
         cls.client = GithubOrgClient("test")
 
-    def test_integration(self):
-        """test integration"""
+    def test_public_repos_no_license(self):
+        """test public repos no license"""
         result = self.client.public_repos()
         self.assertEqual(result, self.expected_repos)
         
     def test_public_repos_with_license(self):
+        """ test public repos with license """
         self.expected_repos = ['dagger', 'kratu',
                                'traceur-compiler', 'firmata.py']
         result = self.client.public_repos(license="apache-2.0")
