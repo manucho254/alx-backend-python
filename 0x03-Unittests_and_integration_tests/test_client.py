@@ -31,12 +31,13 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self):
         """Mocking a property"""
-        with patch.object(
-            GithubOrgClient, "org",
-            return_value=TEST_DATA, new_callable=PropertyMock
-        ) as mock_public_repos_url:
+        with patch.object(GithubOrgClient, "org", 
+                          return_value=TEST_DATA,
+                          new_callable=PropertyMock
+                          ) as mock_public_repos_url:
             client = GithubOrgClient("google")
-            self.assertEqual(client._public_repos_url, TEST_DATA.get("repos_url"))
+            self.assertEqual(client._public_repos_url,
+                             TEST_DATA.get("repos_url"))
 
     @mock.patch.object(
         GithubOrgClient,
@@ -49,18 +50,19 @@ class TestGithubOrgClient(unittest.TestCase):
 
         with patch("client.get_json", return_value=data) as mock_get_json:
             client = GithubOrgClient("google")
-            expected_public_repos = [
-                "episodes.dart",
-                "cpp-netlib",
-                "dagger",
-                "ios-webkit-debug-proxy",
-                "google.github.io",
-                "kratu",
-                "build-debian-cloud",
-                "traceur-compiler",
-                "firmata.py",
-            ]
-            self.assertEqual(client.public_repos(), expected_public_repos)
-            mock_get_json.assert_called_once()
+            response = client.public_repos()
 
+        expected_public_repos = [
+            "episodes.dart",
+            "cpp-netlib",
+            "dagger",
+            "ios-webkit-debug-proxy",
+            "google.github.io",
+            "kratu",
+            "build-debian-cloud",
+            "traceur-compiler",
+            "firmata.py",
+        ]
+        self.assertEqual(response, expected_public_repos)
+        mock_get_json.assert_called_once()
         mocK_public_repos_url.assert_called_once()
