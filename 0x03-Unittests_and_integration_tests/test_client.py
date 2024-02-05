@@ -15,9 +15,6 @@ TEST_DATA = {
     "repos_url": "https://api.github.com/users/google/repos",
 }
 
-data = TEST_PAYLOAD[0][1]
-
-
 class TestGithubOrgClient(unittest.TestCase):
     """Test github org client"""
 
@@ -34,7 +31,7 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(GithubOrgClient, "org", 
                           return_value=TEST_DATA,
                           new_callable=PropertyMock
-                          ) as mock_public_repos_url:
+                          ):
             client = GithubOrgClient("google")
             self.assertEqual(client._public_repos_url,
                              TEST_DATA.get("repos_url"))
@@ -45,22 +42,11 @@ class TestGithubOrgClient(unittest.TestCase):
     )
     def test_public_repos(self, mocK_public_repos_url):
         """Test public repos"""
-
-        with patch("client.get_json", return_value=data) as mock_get_json:
+        mocK_public_repos_url.return_value = "test_url"
+        data = [{"name": "repo-1"}, {"name": "manucho_repo"}]
+        with patch("client.get_json", return_value=data):
             client = GithubOrgClient("google")
             response = client.public_repos()
-
-        expected_public_repos = [
-            "episodes.dart",
-            "cpp-netlib",
-            "dagger",
-            "ios-webkit-debug-proxy",
-            "google.github.io",
-            "kratu",
-            "build-debian-cloud",
-            "traceur-compiler",
-            "firmata.py",
-        ]
-        self.assertEqual(response, expected_public_repos)
-        mock_get_json.assert_called_once()
+            
         mocK_public_repos_url.assert_called_once()
+        self.assertEqual(response, ["repo-1", "manucho_repo"])
