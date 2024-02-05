@@ -8,7 +8,6 @@ from client import GithubOrgClient
 import unittest
 from unittest import mock
 from unittest.mock import PropertyMock, patch
-from fixtures import TEST_PAYLOAD
 
 
 TEST_DATA = {
@@ -37,16 +36,17 @@ class TestGithubOrgClient(unittest.TestCase):
                              TEST_DATA.get("repos_url"))
 
     @mock.patch("client.GithubOrgClient._public_repos_url",
-        return_value=TEST_DATA,
         new_callable=PropertyMock,
     )
     def test_public_repos(self, mocK_public_repos_url):
         """Test public repos"""
         mocK_public_repos_url.return_value = "test_url"
         data = [{"name": "repo-1"}, {"name": "manucho_repo"}]
-        with patch("client.get_json", return_value=data):
+        
+        with patch("client.get_json", return_value=data) as mock_get_json:
             client = GithubOrgClient("google")
             response = client.public_repos()
+            mock_get_json.assert_called_once()
             
         mocK_public_repos_url.assert_called_once()
         self.assertEqual(response, ["repo-1", "manucho_repo"])
